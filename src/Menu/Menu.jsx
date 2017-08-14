@@ -1,14 +1,21 @@
-import { Icon, Item, Menu as SemanticMenu } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Container, Icon, Item, Menu as SemanticMenu } from 'semantic-ui-react';
+import { Link, Route } from 'react-router-dom';
 import React from 'react';
 
+import TimeEntryListPage from '../TimeEntries/TimeEntryListPage';
+
 export default () => (
-  <SemanticMenu>
-    <Item>
-      <Link to="/">
-        <Icon name='home' />
-        Home
-      </Link>
-    </Item>
-  </SemanticMenu>
+  <div>
+    <SemanticMenu>
+      <Item>
+        <Link to="/">
+          <Icon name='home' />
+          Home
+        </Link>
+      </Item>
+    </SemanticMenu>
+    <Container>
+      <Route exact path="/" component={TimeEntryListPage} />
+    </Container>
+  </div>
 )
