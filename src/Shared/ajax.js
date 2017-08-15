@@ -23,12 +23,9 @@ export default ({
 
       componentDidMount() {
         // prevent loadOnMount + manualTrigger => double fetch
-        if(loadOnMount && !this.state.manualTrigger)
+        if(loadOnMount && !this.state.manualTrigger) {
           return this.fetchData()
-      }
-
-      shouldComponentUpdate(nextProps, nextState) {
-        return !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state)
+        }
       }
 
       setLoadedState = json => {
