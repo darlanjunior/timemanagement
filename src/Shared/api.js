@@ -35,7 +35,8 @@ const persistAuthorizationHeaders = response => {
     cookie.save('authorization',
     {
       ...cookie.load('authorization'),
-      ...headers
+      ...headers,
+      'Cache-Control': 'no-cache'
     },
     {
       path: '/',
