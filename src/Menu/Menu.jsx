@@ -16,6 +16,7 @@ import ForgotPasswordPage from '../User/ForgotPasswordPage';
 import RegisterPage from '../User/RegisterPage';
 import SignInPage from '../User/SignInPage';
 import TimeEntryListPage from '../TimeEntries/TimeEntryListPage';
+import UserListPage from '../User/Manage/UserListPage';
 
 const UnsignedMenu = () => (
   <SemanticMenu.Menu position='right'>
@@ -40,9 +41,9 @@ const logout = () => {
   window.location = '/'
 }
 
-const SignedMenu = ({name}) => (
+const SignedMenu = ({name, role}) => (
   <SemanticMenu.Menu position='right'>
-    <Dropdown item text={`Welcome, ${name}`}>
+    <Dropdown item text={`Welcome, ${name} - ${role}`}>
       <Dropdown.Menu>
         <Link to='/profile'><Dropdown.Item>Edit profile</Dropdown.Item></Link>
         <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
@@ -51,7 +52,7 @@ const SignedMenu = ({name}) => (
   </SemanticMenu.Menu>
 )
 
-const Menu = (_, {currentUser: {name}}) => (
+const Menu = (_, {currentUser: {name, role}}) => (
   <div>
     <SemanticMenu>
       <Item>
@@ -60,10 +61,10 @@ const Menu = (_, {currentUser: {name}}) => (
           Home
         </Link>
       </Item>
-      {!!name? <SignedMenu name={name} /> : <UnsignedMenu /> }
+      {!!name? <SignedMenu name={name} role={role} /> : <UnsignedMenu /> }
     </SemanticMenu>
     <Container>
-      <Route exact path="/" component={TimeEntryListPage} />
+      <Route exact path="/" component={role === 'Admin'? UserListPage : TimeEntryListPage} />
       <Route exact path="/time_entries" component={TimeEntryListPage} />
       <Route exact path="/sign_in" component={SignInPage} />
       <Route exact path="/register" component={RegisterPage} />
