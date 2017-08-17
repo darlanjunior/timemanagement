@@ -53,7 +53,7 @@ class UserListPage extends Component {
           value={search_term}
           onChange={updateSearchTerm.bind(this)} />
       </div>
-      <UserList loading={loading} users={data} reload={reload}/>
+      <UserList loading={loading} users={data} reload={() => reload()}/>
       <PageMenu
         page={page}
         count={(meta && meta.count) || 0}

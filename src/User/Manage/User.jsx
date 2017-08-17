@@ -4,8 +4,7 @@ import React from 'react';
 
 import RemoveUserButton from './RemoveUserButton';
 
-export default ({attributes: {
-  id,
+export default ({id, attributes: {
   name,
   email,
   role
@@ -21,7 +20,7 @@ export default ({attributes: {
       </Link>
     </Table.Cell>
     <Table.Cell>
-      <RemoveUserButton id={id} remove={remove}/>
+      <RemoveUserButton id={id} callback={remove}/>
     </Table.Cell>
   </Table.Row>
 )
