@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
     render(
       json: result[:'result.json'],
-      status: status
+      status: result[:'status']
     )
   end
 
@@ -30,11 +30,10 @@ class UsersController < ApplicationController
 
   def destroy
     result = User::Destroy.(params, 'current_user' => current_user)
-    status = result.success? ? :ok : :unprocessable_entity
 
     render(
       json: result[:'result.json'],
-      status: status
+      status: result[:'status']
     )
   end
 end
