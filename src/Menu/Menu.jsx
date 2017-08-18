@@ -65,6 +65,7 @@ const Menu = (_, {currentUser: {name, role}}) => (
     </SemanticMenu>
     <Container>
       <Route exact path="/" component={role === 'Admin'? UserListPage : TimeEntryListPage} />
+      <Route path="/users" component={UserListPage} />
       <Route exact path="/time_entries" component={TimeEntryListPage} />
       <Route exact path="/sign_in" component={SignInPage} />
       <Route exact path="/register" component={RegisterPage} />

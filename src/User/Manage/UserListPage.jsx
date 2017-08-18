@@ -1,6 +1,10 @@
-import { Form } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
+import { Link, Route, Switch } from 'react-router-dom';
 import React, { Component } from 'react';
 import _ from 'lodash'
+
+import CreateUserPage from './CreateUserPage';
+import EditUserPage from './EditUserPage';
 import PageMenu from '../../Shared/Pagination/PageMenu';
 import UserList from './UserList';
 import ajax from '../../Shared/ajax';
@@ -35,6 +39,7 @@ class UserListPage extends Component {
         items_per_page
       },
       props: {
+        match,
         loading,
         reload,
         response: {
@@ -45,6 +50,12 @@ class UserListPage extends Component {
     } = this;
 
     return <div>
+      <Switch>
+        <Route exact path={`${match.url}/new`} component={CreateUserPage} />
+        <Route
+          path={`${match.url}/:id`}
+          render={() => <EditUserPage users={data} />} />
+      </Switch>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         <h3>User list</h3>
         <Form.Input
@@ -53,12 +64,21 @@ class UserListPage extends Component {
           value={search_term}
           onChange={updateSearchTerm.bind(this)} />
       </div>
-      <UserList loading={loading} users={data} reload={() => reload()}/>
+      <UserList
+        loading={loading}
+        users={data}
+        reload={() => reload()}/>
       <PageMenu
         page={page}
         count={(meta && meta.count) || 0}
         items_per_page={items_per_page}
         changePage={changeResults.bind(this)} />
+      <Link to="/users/new">
+        <Button
+          icon="add user"
+          content="Create User"
+          floated="right"/>
+      </Link>
     </div>
   }
 }
