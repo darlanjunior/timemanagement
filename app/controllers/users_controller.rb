@@ -10,7 +10,6 @@ class UsersController < ApplicationController
 
   def create
     result = User::Create.(params, 'current_user' => current_user)
-    status = result.success? ? :ok : :unprocessable_entity
 
     render(
       json: result[:'result.json'],
@@ -20,11 +19,10 @@ class UsersController < ApplicationController
 
   def update
     result = User::Update.(params, 'current_user' => current_user)
-    status = result.success? ? :ok : :unprocessable_entity
 
     render(
       json: result[:'result.json'],
-      status: status
+      status: result[:'status']
     )
   end
 

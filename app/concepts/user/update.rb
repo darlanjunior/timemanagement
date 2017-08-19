@@ -11,16 +11,6 @@ class User::Update < Trailblazer::Operation
   success :success!
   failure :internal_error!
 
-  def generate_password!(options, params:, **)
-    params[:password] = Devise.friendly_token.first(8)
-  end
-
-  def send_mail!(options, params:, **)
-    UserMailer.welcome_email(options['model'], params[:password]).deliver_later
-
-    true
-  end
-
   def invalid_model!(options, **)
     options[:'status'] = :unprocessable_entity
     options[:'result.json'] = {
