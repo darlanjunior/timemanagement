@@ -11,10 +11,12 @@ gem 'puma', '~> 3.7'
 gem 'jbuilder', '~> 2.5'
 gem 'trailblazer-rails'
 gem 'dry-validation'
+gem 'dry-types'
 gem 'roar-jsonapi'
 gem 'carrierwave'
 gem 'devise_token_auth'
 gem 'pundit'
+gem 'date_validator'
 gem 'rack-cors'
 
 group :development, :test do
