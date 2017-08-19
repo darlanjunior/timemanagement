@@ -75,12 +75,5 @@ const api = (url, params={}, method="get", headers={}) =>
   .then(handleHttpErrorCodes)
   .then(persistAuthorizationHeaders)
   .then(response => response.json())
-  .catch(err => {
-    if(err.status === 401) {
-      cookie.remove('authorization')
-    }
-
-    throw err
-  })
 
 export { HttpErrorException, api };
