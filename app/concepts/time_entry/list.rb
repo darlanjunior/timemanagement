@@ -5,6 +5,7 @@ class TimeEntry::List < Trailblazer::Operation
   step Policy::Pundit( TimeEntryPolicy, :list? )
   failure :unauthorized_response!
   step Nested( ::Page::List )
+  step :filter_dates!
   step :represent!
 
   def unauthorized_response!(options)
@@ -18,6 +19,20 @@ class TimeEntry::List < Trailblazer::Operation
     params[:searchable_fields] = [:name, :email]
     params[:page] = params[:page] || 1
     params[:items_per_page] = params[:items_per_page] || 5
+  end
+
+  def filter_dates!(options, params:, **)
+    startDate = params[:startDate]
+    endDate = params[:endDate]
+
+    if(startDate)
+      options[:'result'] = options[:'result'].where('date > ?', DateTime.parse(startDate))
+    end
+    if(endDate)
+      options[:'result'] = options[:'result'].where('date < ?', DateTime.parse(endDate))
+    end
+
+    true
   end
 
   def represent!(options, result:, count:, **)
