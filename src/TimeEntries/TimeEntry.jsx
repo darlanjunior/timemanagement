@@ -2,6 +2,8 @@ import { Button, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
+import RemoveTimeEntryButton from './RemoveTimeEntryButton';
+
 export default ({id, attributes: {
   name,
   date,
@@ -18,6 +20,7 @@ export default ({id, attributes: {
       </Link>
     </Table.Cell>
     <Table.Cell>
+      <RemoveTimeEntryButton id={id} callback={remove}/>
     </Table.Cell>
   </Table.Row>
 )

@@ -3,7 +3,7 @@ import React from 'react';
 
 import TimeEntry from './TimeEntry'
 
-export default ({timeEntries}) => <Table celled structured>
+export default ({timeEntries, reload}) => <Table celled structured>
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell rowSpan='2'>Name</Table.HeaderCell>
@@ -19,7 +19,7 @@ export default ({timeEntries}) => <Table celled structured>
 
   <Table.Body>
     {timeEntries.map(tm =>
-      <TimeEntry key={tm.id} {...tm} />
+      <TimeEntry key={tm.id} {...tm} remove={reload} />
     )}
   </Table.Body>
 </Table>

@@ -22,7 +22,7 @@ const TimeEntryListPage = ({match, response: {data}, reload}) => {
         render={editingPage}/>
     </Switch>
 
-    <TimeEntryList timeEntries={data}/>
+    <TimeEntryList timeEntries={data} {...{reload}}/>
     <Link to={`/time_entries/new`}>
       <Button
         icon="add"
