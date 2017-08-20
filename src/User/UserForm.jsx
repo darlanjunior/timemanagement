@@ -1,4 +1,4 @@
-import { Button, Form as FormTag, Message } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 import { Form as ReactForm } from 'react-form';
 import React from 'react';
 import PropTypes from 'prop-types'
@@ -58,7 +58,7 @@ const UserForm = ({
     defaultValues={initialValues()}
     validate={validate}>
     {({submitForm, errors, values}) => {
-      return <FormTag
+      return <Form
         success={!!success}
         error={!!error}
         onSubmit={submitForm}>
@@ -72,7 +72,7 @@ const UserForm = ({
         <Message success content={!!success && success} />
         <Message error content={!!error && error.map(e => <li>{e}</li>)}/>
         <Button type='submit'>Submit</Button>
-      </FormTag>
+      </Form>
     }}
   </ReactForm>
 
