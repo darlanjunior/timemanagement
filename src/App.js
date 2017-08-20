@@ -2,8 +2,8 @@ import './App.css';
 
 import { BrowserRouter, Route } from 'react-router-dom';
 import React, { Component } from 'react';
-import cookie from 'react-cookies';
 import _ from 'lodash'
+import cookie from 'react-cookies';
 
 import PropTypes from 'prop-types'
 
@@ -32,7 +32,7 @@ class App extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const queryString = window.location.search
 
     if(!!queryString) {
@@ -54,9 +54,15 @@ class App extends Component {
     }
   }
 
-  componentWillReceiveProps = ({response: {success, data}}) => {
-    if(!_.isEqual(data, this.props.data) && success) {
-      this.setState({currentUser: data})
+  componentWillReceiveProps = ({history, response}) => {
+    const {data, success} = response
+    if(!_.isEqual(response, this.props.response)) {
+      if(success) {
+        this.setState({currentUser: data})
+      } else { // means token is expired
+        cookie.remove('authorization', {path: '/'})
+        window.location = '/'
+      }
     }
   }
 

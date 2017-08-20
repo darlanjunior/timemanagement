@@ -72,8 +72,9 @@ const api = (url, params={}, method="get", headers={}) =>
     mode: 'cors',
     body: ['get', 'head'].includes(method)? null : jsonToFormData(params)
   })
-  .then(handleHttpErrorCodes)
   .then(persistAuthorizationHeaders)
+  .then(handleHttpErrorCodes)
   .then(response => response.json())
+  .catch(e => e.response.then(r => r))
 
 export { HttpErrorException, api };
