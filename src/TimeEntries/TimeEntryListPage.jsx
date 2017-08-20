@@ -1,20 +1,28 @@
 import { Button, Loader } from 'semantic-ui-react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import React from 'react';
 
 import CreateTimeEntryPage from './CreateTimeEntryPage';
+import EditTimeEntryPage from './EditTimeEntryPage';
 import TimeEntryList from './TimeEntryList';
 import ajax from '../Shared/ajax';
 
-const TimeEntryListPage = ({match, response, reload}) => {
+const TimeEntryListPage = ({match, response: {data}, reload}) => {
   const creationPage = () => <CreateTimeEntryPage refreshList={() => reload()}/>
+  const editingPage = () => <EditTimeEntryPage refreshList={() => reload()} timeEntries={data}/>
 
   return <div>
-    <Route
-      exact
-      path={`${match.url}/new`}
-      render={creationPage} />
-    <TimeEntryList timeEntries={response.data}/>
+    <Switch>
+      <Route
+        exact
+        path={`${match.url}/new`}
+        render={creationPage} />
+      <Route
+        path={`${match.url}/:id`}
+        render={editingPage}/>
+    </Switch>
+
+    <TimeEntryList timeEntries={data}/>
     <Link to={`/time_entries/new`}>
       <Button
         icon="add"

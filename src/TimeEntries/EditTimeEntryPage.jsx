@@ -1,24 +1,37 @@
 import { Button, Form, Message } from 'semantic-ui-react';
 import { Form as ReactForm } from 'react-form';
+import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 
 import Input from '../Shared/Input';
 import ajax from '../Shared/ajax';
 
-class CreateTimeEntryListPage extends Component {
+class EditTimeEntryPage extends Component {
   state = {
     success: undefined,
     error: undefined
   }
 
-  render = () => {
-    const {reload, refreshList} = this.props
+  render() {
+    const {
+      refreshList,
+      reload,
+      timeEntries,
+      match: {
+        params: {id}
+      }
+    } = this.props
+
+    if(!timeEntries) return <div></div>
+
+    const timeEntry = timeEntries.find(tm => tm.id === id).attributes
     const {success, error} = this.state
 
     return <ReactForm
+      defaultValues={timeEntry}
       onSubmit={
         form => {
-          reload(form, 'post')
+          reload(form, 'put', '/'+id)
             .then(response => {
               if(response.status === 'success') {
                 this.setState({success: true, error: undefined})
@@ -49,7 +62,7 @@ class CreateTimeEntryListPage extends Component {
   }
 }
 
-export default ajax({
+export default withRouter(ajax({
   url: '/time_entries',
   loadOnMount: false
-})(CreateTimeEntryListPage)
+})(EditTimeEntryPage));
