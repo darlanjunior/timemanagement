@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20170818115533) do
   create_table "time_entries", force: :cascade do |t|
     t.date "date"
     t.time "start_time"
-    t.string "duration"
+    t.time "duration"
     t.string "name"
     t.text "description"
     t.bigint "user_id"

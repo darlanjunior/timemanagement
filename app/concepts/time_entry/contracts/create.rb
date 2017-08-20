@@ -12,7 +12,7 @@ module TimeEntry::Contract
     property :duration, type: Types::Form::Time
 
     validation :default do
-      required(:user).filled #(type?: ::User)
+      required(:user).filled
       required(:name).filled
       required(:date).filled(:date?)
       required(:duration).filled(:time?)

@@ -11,11 +11,19 @@ class TimeEntry::Create < Trailblazer::Operation
   success :success!
   failure :internal_error!
 
+  def full_messages(errors)
+    to_message = lambda do |field|
+      lambda {|message| "#{field.to_s.classify} #{message}"}
+    end
+
+    errors.keys.map {|field| errors[field].map(&to_message.call(field)) }.flatten
+  end
+
   def invalid_model!(options, **)
     options[:'status'] = :unprocessable_entity
     options[:'result.json'] = {
       status: 'error',
-      errors: options['contract.default'].errors.messages
+      errors: full_messages(options['contract.default'].errors.messages)
     }
   end
 

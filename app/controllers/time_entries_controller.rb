@@ -18,7 +18,9 @@ class TimeEntriesController < ApplicationController
   end
 
   def create
-    result = TimeEntry::Create.(params, 'current_user' => current_user)
+    user_hash = {user: current_user}
+
+    result = TimeEntry::Create.(params.merge(user_hash), {'current_user' => current_user})
     status = result.success? ? :ok : :unprocessable_entity
 
     render(
@@ -28,7 +30,9 @@ class TimeEntriesController < ApplicationController
   end
 
   def update
-    result = TimeEntry::Update.(params, 'current_user' => current_user)
+    user_hash = {user: current_user}
+
+    result = TimeEntry::Update.(params.merge(user_hash), {'current_user' => current_user})
 
     render(
       json: result[:'result.json'],
@@ -37,7 +41,9 @@ class TimeEntriesController < ApplicationController
   end
 
   def destroy
-    result = TimeEntry::Destroy.(params, 'current_user' => current_user)
+    user_hash = {user: current_user}
+
+    result = TimeEntry::Destroy.(params.merge(user_hash), {'current_user' => current_user})
 
     render(
       json: result[:'result.json'],
