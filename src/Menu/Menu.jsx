@@ -64,13 +64,13 @@ const Menu = (_, {currentUser: {name, role}}) => (
       {!!name? <SignedMenu name={name} role={role} /> : <UnsignedMenu /> }
     </SemanticMenu>
     <Container>
-      <Route exact path="/" component={role === 'Admin'? UserListPage : TimeEntryListPage} />
+      <Route exact path="/" component={!!role? (role === 'Admin'? UserListPage : TimeEntryListPage) : null} />
       <Route path="/users" component={UserListPage} />
-      <Route exact path="/time_entries" component={TimeEntryListPage} />
-      <Route exact path="/sign_in" component={SignInPage} />
-      <Route exact path="/register" component={RegisterPage} />
-      <Route exact path="/profile" component={EditProfilePage} />
-      <Route exact path="/password" component={ForgotPasswordPage} />
+      <Route path="/time_entries" component={TimeEntryListPage} />
+      <Route path="/sign_in" component={SignInPage} />
+      <Route path="/register" component={RegisterPage} />
+      <Route path="/profile" component={EditProfilePage} />
+      <Route path="/password" component={ForgotPasswordPage} />
     </Container>
   </div>
 )
