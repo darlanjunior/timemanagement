@@ -16,7 +16,7 @@ export default ({id, attributes: {
     <Table.Cell>{duration}</Table.Cell>
     <Table.Cell>
       <Link to={`/time_entries/${id}`}>
-        <Button icon='edit'/>
+        <Button icon='edit' fluid/>
       </Link>
     </Table.Cell>
     <Table.Cell>

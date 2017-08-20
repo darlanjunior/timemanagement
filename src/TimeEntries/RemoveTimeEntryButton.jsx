@@ -5,6 +5,7 @@ import ajax from '../Shared/ajax';
 
 const RemoveTimeEntryButton = ({reload, id, callback}) => (
   <Button
+    fluid
     icon="remove"
     onClick={() => reload({}, 'delete', `/${id}`).then(callback)}/>
 )

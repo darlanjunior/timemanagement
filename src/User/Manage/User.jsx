@@ -16,7 +16,7 @@ export default ({id, attributes: {
     <Table.Cell>{role}</Table.Cell>
     <Table.Cell>
       <Link to={`/users/${id}`}>
-        <Button icon='edit'/>
+        <Button icon='edit' fluid/>
       </Link>
     </Table.Cell>
     <Table.Cell>
