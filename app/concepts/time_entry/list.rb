@@ -9,7 +9,7 @@ class TimeEntry::List < Trailblazer::Operation
 
   def unauthorized_response!(options)
     options[:'result.json'] = {
-      error: 'Not allowed to list users'
+      error: 'Not allowed to list time entries'
     }
   end
 
@@ -19,10 +19,6 @@ class TimeEntry::List < Trailblazer::Operation
     params[:page] = params[:page] || 1
     params[:items_per_page] = params[:items_per_page] || 5
   end
-
-  # def filter_admins!(options, result:, current_user:, **)
-  #   result = result.where(user: current_user)
-  # end
 
   def represent!(options, result:, count:, **)
     options[:'result.json'] =

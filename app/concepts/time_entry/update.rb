@@ -2,7 +2,7 @@ require_relative './policies/time_entry_policy'
 require_relative './contracts/update'
 class TimeEntry::Update < Trailblazer::Operation
   step Model(TimeEntry, :find_by)
-  step Contract::Build( constant: TimeEntry::Contract::Update )
+  step Contract::Build( constant: TimeEntry::Contract::Create )
   step Contract::Validate()
   failure :invalid_model!, fail_fast: true
   step Policy::Pundit( TimeEntryPolicy, :update? )
@@ -11,12 +11,19 @@ class TimeEntry::Update < Trailblazer::Operation
   success :success!
   failure :internal_error!
 
+  def full_messages(errors)
+    to_message = lambda do |field|
+      lambda {|message| "#{field.to_s.classify} #{message}"}
+    end
+
+    errors.keys.map {|field| errors[field].map(&to_message.call(field)) }.flatten
+  end
 
   def invalid_model!(options, **)
     options[:'status'] = :unprocessable_entity
     options[:'result.json'] = {
       status: 'error',
-      errors: options['contract.default'].errors.full_messages
+      errors: full_messages(options['contract.default'].errors.messages)
     }
   end
 
@@ -24,7 +31,7 @@ class TimeEntry::Update < Trailblazer::Operation
     options[:'status'] = :unauthorized
     options[:'result.json'] = {
       status: 'error',
-      errors: ["Not allowed to create #{params['role']}"]
+      errors: ["Not allowed to update time entry"]
     }
   end
 
@@ -32,7 +39,7 @@ class TimeEntry::Update < Trailblazer::Operation
     options[:'status'] = :ok
     options[:'result.json'] = {
       status: 'success',
-      message: 'User created'
+      message: 'Time entry updated'
     }
   end
 
