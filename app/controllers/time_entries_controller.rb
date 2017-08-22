@@ -1,6 +1,8 @@
 class TimeEntriesController < ApplicationController
+  before_action :set_user
+
   def index
-    result = TimeEntry::List.(params, 'current_user' => current_user)
+    result = TimeEntry::List.(params, user: @user, 'current_user' => current_user)
 
     render(
       json: result[:'result.json'],
@@ -9,7 +11,7 @@ class TimeEntriesController < ApplicationController
   end
 
   def show
-    result = TimeEntry::Show.(params, 'current_user' => current_user)
+    result = TimeEntry::Show.(params, user: @user, 'current_user' => current_user)
 
     render(
       json: result[:'result.json'],
@@ -18,10 +20,10 @@ class TimeEntriesController < ApplicationController
   end
 
   def create
-    user_hash = {user: current_user}
-
-    result = TimeEntry::Create.(params.merge(user_hash), {'current_user' => current_user})
-    status = result.success? ? :ok : :unprocessable_entity
+    result = TimeEntry::Create.(
+      params.merge({user: @user}),
+      'current_user' => current_user
+    )
 
     render(
       json: result[:'result.json'],
@@ -30,9 +32,10 @@ class TimeEntriesController < ApplicationController
   end
 
   def update
-    user_hash = {user: current_user}
-
-    result = TimeEntry::Update.(params.merge(user_hash), {'current_user' => current_user})
+    result = TimeEntry::Update.(
+      params.merge({user: @user}),
+      'current_user' => current_user
+    )
 
     render(
       json: result[:'result.json'],
@@ -41,13 +44,21 @@ class TimeEntriesController < ApplicationController
   end
 
   def destroy
-    user_hash = {user: current_user}
-
-    result = TimeEntry::Destroy.(params.merge(user_hash), {'current_user' => current_user})
+    result = TimeEntry::Destroy.(
+      params.merge({user: @user}),
+      'current_user' => current_user
+    )
 
     render(
       json: result[:'result.json'],
       status: result[:'status']
     )
+  end
+
+  private
+  def set_user
+    @user = current_user.role == 'Admin' ?
+      User.find(params[:user_id]) :
+      current_user
   end
 end
