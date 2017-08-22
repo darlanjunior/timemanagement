@@ -5,7 +5,9 @@ class TimeEntry::List < Trailblazer::Operation
   step Policy::Pundit( TimeEntryPolicy, :list? )
   failure :unauthorized_response!
   step Nested( ::Page::List )
+  step :filter_user!
   step :filter_dates!
+  step :set_workday_filled_dates!
   step :represent!
 
   def unauthorized_response!(options)
@@ -19,6 +21,10 @@ class TimeEntry::List < Trailblazer::Operation
     params[:searchable_fields] = [:name, :email]
     params[:page] = params[:page] || 1
     params[:items_per_page] = params[:items_per_page] || 5
+  end
+
+  def filter_user!(options, user:, **)
+    options[:'result'] = options[:'result'].where(user: user)
   end
 
   def filter_dates!(options, params:, **)
@@ -35,11 +41,34 @@ class TimeEntry::List < Trailblazer::Operation
     true
   end
 
-  def represent!(options, result:, count:, **)
+  def set_workday_filled_dates!(options, result:, user:, **)
+    dates = result.map {|r| r.date }
+
+    options[:date_duration_sum] =
+      TimeEntry
+        .where(date: dates)
+        .where(user: user)
+        .group(:date)
+        .sum(:duration)
+  end
+
+  def represent!(options, result:, count:, date_duration_sum:, user:, **)
+    user_hours = user.preferred_working_hours
+
+    user_options = {
+      date_duration_sum: date_duration_sum,
+      preferred_working_hours: user_hours
+    }
+
+    meta = {
+      count: count,
+      preferred_working_hours: user_hours
+    }
+
     options[:'result.json'] =
       TimeEntryRepresenter
         .for_collection
         .new(result)
-        .to_json(meta: {count: count})
+        .to_json(user_options: user_options)
   end
 end

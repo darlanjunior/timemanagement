@@ -25,5 +25,6 @@ RSpec.describe TimeEntry::Create do
 
     it { expect(subject[:'result.json'][:status]).to eq 'success' }
     it { expect(subject[:'result.json'][:errors]).to be_nil }
+    it { expect(subject[:'result.json']['model']).to be_nil }
   end
 end

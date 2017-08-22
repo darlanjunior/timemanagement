@@ -12,8 +12,10 @@ class EndUser < User
   end
 
   def as_json(except: nil, prefixes: nil, template: nil)
+    formatted = preferred_working_hours && preferred_working_hours.strftime('%H:%M')
+
     super.merge({
-      preferred_working_hours: preferred_working_hours.strftime('%H:%M')
+      preferred_working_hours: formatted
     })
   end
 end
