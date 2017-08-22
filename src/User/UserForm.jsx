@@ -12,7 +12,7 @@ const validate = () => {
 
 const formatLabel = (label) => {
   const firstLetter = label.charAt(0).toUpperCase()
-  const remainder = label.slice(1).replace('_', ' ')
+  const remainder = label.slice(1).replace(/_/g, ' ')
 
   return firstLetter+remainder
 }

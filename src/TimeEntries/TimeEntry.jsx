@@ -7,10 +7,11 @@ import RemoveTimeEntryButton from './RemoveTimeEntryButton';
 export default ({id, attributes: {
   name,
   date,
-  duration
+  duration,
+  green
 }, remove
 }) => (
-  <Table.Row>
+  <Table.Row style={{backgroundColor: green? 'green' : 'red'}}>
     <Table.Cell>{name}</Table.Cell>
     <Table.Cell>{date}</Table.Cell>
     <Table.Cell>{duration}</Table.Cell>

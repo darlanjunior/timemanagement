@@ -29,7 +29,8 @@ class App extends Component {
     currentUser: {
       name: '',
       role: '',
-      email: ''
+      email: '',
+      preferred_working_hours: ''
     }
   }
 
@@ -59,7 +60,7 @@ class App extends Component {
     const {data, success} = response
     if(!_.isEqual(response, this.props.response)) {
       if(success) {
-        this.setState({currentUser: data})
+        this.setCurrentUser(data)
       } else { // means token is expired
         cookie.remove('authorization', {path: '/'})
         window.location = '/'
@@ -73,7 +74,15 @@ class App extends Component {
     urlEndpoint
   }}
 
-  setCurrentUser = ({name, picture, role}) => this.setState({currentUser: {name, picture, role}})
+  setCurrentUser = ({name, picture, role, preferred_working_hours}) =>
+    this.setState({
+      currentUser: {
+        name,
+        picture,
+        role,
+        preferred_working_hours: (role === 'EndUser' ? preferred_working_hours : null)
+      }
+    })
 
   render() {
     return (
