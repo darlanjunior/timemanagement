@@ -6,7 +6,6 @@ class TimeEntriesController < ActionController::Base
   def index
     result = TimeEntry::List.(params, user: @user, 'current_user' => current_user)
 
-
     respond_to do |format|
       format.json {
         render(
@@ -17,14 +16,10 @@ class TimeEntriesController < ActionController::Base
 
       @result = result[:'result']
       format.html {
-        render json: {oi: render_to_string(:template => 'time_entries/index')}
+        render json: {html: render_to_string(:template => 'time_entries/index')}
       }
     end
   end
-
-  # render(
-  #   json:
-  # )
 
   def show
     result = TimeEntry::Show.(params, user: @user, 'current_user' => current_user)
