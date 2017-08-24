@@ -2,8 +2,17 @@ require 'ostruct'
 require 'rails_helper'
 RSpec.describe TimeEntry::Contract::Create do
   describe '#validate' do
-
     before do
+      @user = EndUser.new({
+        email: 'asdf@asdf.asdf',
+        name: 'asdf',
+        role: 'EndUser',
+        password: '12345678',
+      })
+
+      @user.skip_confirmation!
+      @user.save
+
       @model = described_class.new(TimeEntry.new)
     end
 
@@ -11,7 +20,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'valid contract' do
       let(:contract) {{
-        user: User.new,
+        end_user: User.new,
         name: 'oi',
         description: 'oi',
         duration: '08:00',
@@ -26,7 +35,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'invalid duration' do
       let(:contract) {{
-        user: User.new,
+        end_user: User.new,
         name: 'oi',
         description: 'oi',
         duration: 'asdf',
@@ -43,7 +52,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'invalid date' do
       let(:contract) {{
-        user: User.new,
+        end_user: User.new,
         name: 'oi',
         description: 'oi',
         duration: '08:00',
@@ -60,7 +69,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'missing name' do
       let(:contract) {{
-        user: User.new,
+        end_user: User.new,
         description: 'oi',
         duration: '08:00',
         date: '2017-12-31'
@@ -70,6 +79,50 @@ RSpec.describe TimeEntry::Contract::Create do
         expect(@model.errors.messages).to match({
           name: ['must be filled']
         })
+      end
+    end
+
+    context 'entry exists on date' do
+      before do
+        TimeEntry.create(
+          name: 'filling',
+          description: 'filling',
+          date: '2017-12-31',
+          duration: '00:10',
+          end_user: @user
+        )
+      end
+
+      context 'more than 24 hours total' do
+        let(:contract) {{
+          end_user: User.new,
+          name: 'oi',
+          description: 'oi',
+          duration: '23:51',
+          date: '2017-12-31'
+        }}
+
+        it do
+          is_expected.to be_falsy
+          expect(@model.errors.messages).to match({
+            duration: ["more than 24 hours on a single date"]
+          })
+        end
+      end
+
+      context 'fewer than 24 hours total' do
+        let(:contract) {{
+          end_user: User.new,
+          name: 'oi',
+          description: 'oi',
+          duration: '23:49',
+          date: '2017-12-31'
+        }}
+
+        it do
+          is_expected.to be_truthy
+          expect(@model.errors.messages).to be_empty
+        end
       end
     end
 
