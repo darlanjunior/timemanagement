@@ -1,14 +1,30 @@
-class TimeEntriesController < ApplicationController
-  before_action :set_user
+class TimeEntriesController < ActionController::Base
+  include DeviseTokenAuth::Concerns::SetUserByToken
+  include ActionController::MimeResponds
 
+  before_action :set_user
   def index
     result = TimeEntry::List.(params, user: @user, 'current_user' => current_user)
 
-    render(
-      json: result[:'result.json'],
-      status: result["result.policy.default"].success? ? :ok : :unauthorized
-    )
+
+    respond_to do |format|
+      format.json {
+        render(
+          json: result[:'result.json'],
+          status: result["result.policy.default"].success? ? :ok : :unauthorized
+        )
+      }
+
+      @result = result[:'result']
+      format.html {
+        render json: {oi: render_to_string(:template => 'time_entries/index')}
+      }
+    end
   end
+
+  # render(
+  #   json:
+  # )
 
   def show
     result = TimeEntry::Show.(params, user: @user, 'current_user' => current_user)

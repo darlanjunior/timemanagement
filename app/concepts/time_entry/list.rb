@@ -24,7 +24,7 @@ class TimeEntry::List < Trailblazer::Operation
   end
 
   def filter_user!(options, user:, **)
-    options[:'result'] = options[:'result'].where(user: user)
+    options[:'result'] = options[:'result'].where(end_user: user)
   end
 
   def filter_dates!(options, params:, **)
@@ -47,7 +47,7 @@ class TimeEntry::List < Trailblazer::Operation
     options[:date_duration_sum] =
       TimeEntry
         .where(date: dates)
-        .where(user: user)
+        .where(end_user: user)
         .group(:date)
         .sum(:duration)
   end

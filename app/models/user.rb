@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+
   self.inheritance_column = :role
   # Include default devise modules.
   devise :database_authenticatable, :recoverable, :validatable, :registerable, :confirmable
