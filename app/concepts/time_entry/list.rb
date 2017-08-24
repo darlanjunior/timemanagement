@@ -18,7 +18,7 @@ class TimeEntry::List < Trailblazer::Operation
 
   def set_variables!(options, params:, **)
     params[:model] = ::TimeEntry
-    params[:searchable_fields] = [:name, :email]
+    params[:searchable_fields] = [:name]
     params[:page] = params[:page] || 1
     params[:items_per_page] = params[:items_per_page] || 5
   end
@@ -69,6 +69,6 @@ class TimeEntry::List < Trailblazer::Operation
       TimeEntryRepresenter
         .for_collection
         .new(result)
-        .to_json(user_options: user_options)
+        .to_json(user_options: user_options, meta: {count: count})
   end
 end
