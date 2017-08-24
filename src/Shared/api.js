@@ -22,7 +22,7 @@ const authorizationHeaders = headers =>
 
 const handleHttpErrorCodes = response => {
   if (!response.ok) {
-    throw HttpErrorException(response.json(), response.status)
+    return response.json().then((json) => { throw HttpErrorException(json, response.status) })
   }
 
   return response;
@@ -75,6 +75,5 @@ const api = (url, params={}, method="get", headers={}) =>
   .then(persistAuthorizationHeaders)
   .then(handleHttpErrorCodes)
   .then(response => response.json())
-  .catch(e => e.response.then(r => r))
 
 export { HttpErrorException, api };
