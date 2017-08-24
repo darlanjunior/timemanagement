@@ -1,4 +1,4 @@
-import { Button, Form, Message } from 'semantic-ui-react';
+import { Button, Form, Message, Segment } from 'semantic-ui-react';
 import { Form as ReactForm } from 'react-form';
 import React, { Component } from 'react';
 
@@ -15,7 +15,9 @@ class CreateTimeEntryListPage extends Component {
     const {reload, refreshList} = this.props
     const {success, error} = this.state
 
-    return <ReactForm
+    return <Segment>
+      <h2>Create Time Entry</h2>
+      <ReactForm
       onSubmit={
         form => {
           reload(form, 'post')
@@ -46,6 +48,7 @@ class CreateTimeEntryListPage extends Component {
         </Form>
       }}
     </ReactForm>
+    </Segment>
   }
 }
 

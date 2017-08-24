@@ -5,6 +5,7 @@ import ajax from '../../Shared/ajax';
 
 const RemoveUserButton = ({reload, id, callback}) => (
   <Button
+    negative
     fluid
     icon="remove user"
     onClick={() => reload({}, 'delete', `/${id}`).then(callback)}/>
@@ -13,5 +14,5 @@ const RemoveUserButton = ({reload, id, callback}) => (
 export default ajax({
   url: '/users',
   loadOnMount: false,
-  loadingComponent: <Loader />
+  loadingComponent: <Loader active/>
 })(RemoveUserButton)

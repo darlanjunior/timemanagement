@@ -1,4 +1,4 @@
-import { Button, Form, Message } from 'semantic-ui-react';
+import { Button, Form, Message, Segment } from 'semantic-ui-react';
 import { Form as ReactForm } from 'react-form';
 import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
@@ -27,7 +27,9 @@ class EditTimeEntryPage extends Component {
     const timeEntry = timeEntries.find(tm => tm.id === id).attributes
     const {success, error} = this.state
 
-    return <ReactForm
+    return <Segment>
+      <h2>Edit Time Entry</h2>
+      <ReactForm
       defaultValues={timeEntry}
       onSubmit={
         form => {
@@ -59,6 +61,7 @@ class EditTimeEntryPage extends Component {
         </Form>
       }}
     </ReactForm>
+  </Segment>
   }
 }
 

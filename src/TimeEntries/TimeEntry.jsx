@@ -11,7 +11,7 @@ export default ({id, attributes: {
   green
 }, remove
 }) => (
-  <Table.Row style={{backgroundColor: green? 'green' : 'red'}}>
+  <Table.Row positive={green} negative={!green}>
     <Table.Cell>{name}</Table.Cell>
     <Table.Cell>{date}</Table.Cell>
     <Table.Cell>{duration}</Table.Cell>
