@@ -3,7 +3,7 @@ require_relative './policies/time_entry_policy'
 class TimeEntry::List < Trailblazer::Operation
   step :set_variables!
   step Policy::Pundit( TimeEntryPolicy, :list? )
-  failure :unauthorized_response!
+  failure :unauthorized_response!, fail_fast: true
   step Nested( ::Page::List )
   step :filter_user!
   step :filter_dates!

@@ -2,7 +2,7 @@ require_relative './policies/time_entry_policy'
 class TimeEntry::Destroy < Trailblazer::Operation
   step Model(TimeEntry, :find_by)
   step Policy::Pundit( TimeEntryPolicy, :destroy? )
-  failure :unauthorized_response!
+  failure :unauthorized_response!, fail_fast: true
   step :destroy!
   success :success!
   failure :internal_error!

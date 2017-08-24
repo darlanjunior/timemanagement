@@ -4,9 +4,15 @@ class TimeEntryPolicy
   end
 
   def list?
-    return false if !@user || @user.role == 'Manager'
+    !(!@user || @user.role == 'Manager')
+  end
 
-    true
+  def show?
+    !(
+      !@user ||
+      @user.role == 'Manager' ||
+      (@model.end_user != @user && @user.role == 'EndUser')
+      )
   end
 
   def create?
@@ -22,8 +28,8 @@ class TimeEntryPolicy
   def update?
     if !@user ||
         @user.role == 'Manager' ||
-        (@user.role == 'Admin' && @model.user == @user) ||
-        (@user.role == 'EndUser' && @model.user != @user)
+        (@user.role == 'Admin' && @model.end_user == @user) ||
+        (@user.role == 'EndUser' && @model.end_user != @user)
       return false
     end
 
@@ -33,8 +39,8 @@ class TimeEntryPolicy
   def destroy?
     if !@user ||
         @user.role == 'Manager' ||
-        (@user.role == 'Admin' && @model.user == @user) ||
-        (@user.role == 'EndUser' && @model.user != @user)
+        (@user.role == 'Admin' && @model.end_user == @user) ||
+        (@user.role == 'EndUser' && @model.end_user != @user)
       return false
     end
 
