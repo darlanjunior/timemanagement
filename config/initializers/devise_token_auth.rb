@@ -45,6 +45,7 @@ DeviseTokenAuth.setup do |config|
   # If, however, you wish to integrate with legacy Devise authentication, you can
   # do so by enabling this flag. NOTE: This feature is highly experimental!
   # config.enable_standard_devise_support = false
+  config.batch_request_buffer_throttle = 1.seconds
   config.max_number_of_devices = 100
   config.default_confirm_success_url = 'http://localhost:3000'
   config.default_password_reset_url = 'http://localhost:3000/profile'
