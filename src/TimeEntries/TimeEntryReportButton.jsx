@@ -6,7 +6,7 @@ import ajax from '../Shared/ajax';
 const htmlToNewWindow = ({html}) => window.open().document.write(html)
 const TimeEntryReportButton = ({reload, params}) => <Button
   floated='right'
-  onClick={() => (reload(params).then(htmlToNewWindow)}
+  onClick={() => reload(params).then(htmlToNewWindow)}
   icon="external"
   content="Export"/>
 
