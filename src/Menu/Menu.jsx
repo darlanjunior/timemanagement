@@ -14,6 +14,7 @@ import PropTypes from 'prop-types'
 import EditProfilePage from '../User/EditProfilePage';
 import ForgotPasswordPage from '../User/ForgotPasswordPage';
 import RegisterPage from '../User/RegisterPage';
+import ShowTimeEntryPage from '../TimeEntries/ShowTimeEntryPage';
 import SignInPage from '../User/SignInPage';
 import TimeEntryListPage from '../TimeEntries/TimeEntryListPage';
 import UserListPage from '../User/Manage/UserListPage';
@@ -66,7 +67,8 @@ const Menu = (_, {currentUser: {name, role}}) => (
     <Container>
       <Route exact path="/" component={!!role? (role === 'Admin'? UserListPage : TimeEntryListPage) : null} />
       <Route path="/users" component={UserListPage} />
-      <Route path="/time_entries" component={TimeEntryListPage} />
+      <Route exact path="/time_entries" component={TimeEntryListPage} />
+      <Route exact path="/time_entries/:id/show" component={ShowTimeEntryPage} />
       <Route path="/sign_in" component={SignInPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/profile" component={EditProfilePage} />

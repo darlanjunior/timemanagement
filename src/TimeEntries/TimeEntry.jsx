@@ -12,7 +12,11 @@ export default ({id, attributes: {
 }, remove
 }) => (
   <Table.Row positive={green} negative={!green}>
-    <Table.Cell>{name}</Table.Cell>
+    <Table.Cell>
+      <Link to={`/time_entries/${id}/show`}>
+        {name}
+      </Link>
+    </Table.Cell>
     <Table.Cell>{date}</Table.Cell>
     <Table.Cell>{duration}</Table.Cell>
     <Table.Cell>
