@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170822193706) do
+ActiveRecord::Schema.define(version: 20170824051533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,14 @@ ActiveRecord::Schema.define(version: 20170822193706) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_live_tasks_on_user_id"
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.string "text"
+    t.bigint "time_entry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["time_entry_id"], name: "index_notes_on_time_entry_id"
   end
 
   create_table "time_entries", force: :cascade do |t|
@@ -67,5 +75,6 @@ ActiveRecord::Schema.define(version: 20170822193706) do
   end
 
   add_foreign_key "live_tasks", "users"
+  add_foreign_key "notes", "time_entries"
   add_foreign_key "time_entries", "users"
 end

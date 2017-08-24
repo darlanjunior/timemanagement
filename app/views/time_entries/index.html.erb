@@ -8,6 +8,14 @@
           <li>Description: <%= i.description %></li>
           <li>Date: <%= i.date %></li>
           <li>Total time: <%= i.duration.strftime('%H:%M') %></li>
+          <% if i.notes.size > 0 %>
+            <li>Notes: </li>
+            <ul>
+              <% i.notes.each do |note| %>
+                <li><%= note.text %></li>
+              <% end %>
+            </ul>
+          <% end %>
         </ul>
       </li>
       <% end %>
