@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170821190506) do
+ActiveRecord::Schema.define(version: 20170822193706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "live_tasks", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "start"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_live_tasks_on_user_id"
+  end
 
   create_table "time_entries", force: :cascade do |t|
     t.date "date"
@@ -56,5 +66,6 @@ ActiveRecord::Schema.define(version: 20170821190506) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "live_tasks", "users"
   add_foreign_key "time_entries", "users"
 end
