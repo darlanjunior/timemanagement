@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <ul>
+      <% @result.each do |i| %>
+      <li>
+        <h2><%= i.name %></h2>
+        <ul>
+          <li>Description: <%= i.description %></li>
+          <li>Date: <%= i.date %></li>
+          <li>Total time: <%= i.duration.strftime('%H:%M') %></li>
+        </ul>
+      </li>
+      <% end %>
+    </ul>
+  </body>
+</html>
