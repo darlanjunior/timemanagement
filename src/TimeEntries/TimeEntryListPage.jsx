@@ -26,12 +26,16 @@ class TimeEntryListPage extends Component {
     this.changeResults({search_term: target.value})
   }
 
-  mergeStateWith(params, state={}) {
+  mergeStateClear(params, state={}) {
     return _.omitBy({...state, ...params}, val => !val)
   }
 
+  mergeState(params, state={}) {
+    return {...state, ...params}
+  }
+
   changeResults(params) {
-    const newState = this.mergeStateWith(params, this.state)
+    const newState = this.mergeState(params, this.state)
 
     this.setState(newState, _.debounce(
       () => this.props.reload(newState),
@@ -56,14 +60,14 @@ class TimeEntryListPage extends Component {
       items_per_page
     } = this.state
 
-    const {updateSearchTerm, changeResults, mergeStateWith} = this
+    const {updateSearchTerm, changeResults, mergeStateClear} = this
 
     const creationPage = () => <CreateTimeEntryPage
       userId={userId}
-      refreshList={() => reload(mergeStateWith(this.state))}/>
+      refreshList={() => reload(mergeStateClear(this.state))}/>
     const editingPage = () => <EditTimeEntryPage
       userId={userId}
-      refreshList={() => reload(mergeStateWith(this.state))}
+      refreshList={() => reload(mergeStateClear(this.state))}
       timeEntries={data}/>
     return <div>
       <Switch>
@@ -76,7 +80,7 @@ class TimeEntryListPage extends Component {
           render={editingPage}/>
       </Switch>
 
-      <LiveTask refreshList={() => reload(mergeStateWith(this.state))} />
+      <LiveTask refreshList={() => reload(mergeStateClear(this.state))} />
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
       <div>
@@ -87,7 +91,7 @@ class TimeEntryListPage extends Component {
           isOutsideRange={() => false}
           onDatesChange={({ startDate, endDate }) =>
             this.setState({ startDate, endDate },
-              () => reload(mergeStateWith({ startDate, endDate }, this.state))
+              () => reload(mergeStateClear({ startDate, endDate }, this.state))
             )
           }
           onFocusChange={focusedInput => this.setState({ focusedInput })}
@@ -106,7 +110,7 @@ class TimeEntryListPage extends Component {
       {loading? <Loader active/> : <TimeEntryList
         timeEntries={data}
         reload={() => {
-          reload(mergeStateWith(this.state))
+          reload(mergeStateClear(this.state))
         }}/>
       }
 
