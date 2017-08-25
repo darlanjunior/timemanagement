@@ -4,7 +4,7 @@ class TimeEntryPolicy
   end
 
   def list?
-    @user && ['Admin', 'EndUser'].include?(@user.role)
+    !!@user
   end
 
   def show?

@@ -19,7 +19,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'valid contract' do
       let(:contract) {{
-        user: User.new,
+        user: @user,
         name: 'oi',
         description: 'oi',
         duration: '08:00',
@@ -34,7 +34,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'invalid duration' do
       let(:contract) {{
-        user: User.new,
+        user: @user,
         name: 'oi',
         description: 'oi',
         duration: 'asdf',
@@ -51,7 +51,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'invalid date' do
       let(:contract) {{
-        user: User.new,
+        user: @user,
         name: 'oi',
         description: 'oi',
         duration: '08:00',
@@ -68,7 +68,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
     context 'missing name' do
       let(:contract) {{
-        user: User.new,
+        user: @user,
         description: 'oi',
         duration: '08:00',
         date: '2017-12-31'
@@ -94,7 +94,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
       context 'more than 24 hours total' do
         let(:contract) {{
-          user: User.new,
+          user: @user,
           name: 'oi',
           description: 'oi',
           duration: '23:51',
@@ -111,7 +111,7 @@ RSpec.describe TimeEntry::Contract::Create do
 
       context 'fewer than 24 hours total' do
         let(:contract) {{
-          user: User.new,
+          user: @user,
           name: 'oi',
           description: 'oi',
           duration: '23:49',

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
   def index
     result = User::List.(params, 'current_user' => current_user)
 

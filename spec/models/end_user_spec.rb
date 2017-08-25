@@ -26,11 +26,6 @@ RSpec.describe EndUser do
       it {is_expected.to match({preferred_working_hours: ['invalid format']})}
     end
 
-    context 'when preferred_working_hours has invalid minutes value' do
-      let(:pwh) { '23:60' }
-      it {is_expected.to match({preferred_working_hours: ['invalid format']})}
-    end
-
     context 'when no preferred_working_hours is correct' do
       let(:pwh) { '23:59' }
       it {is_expected.to be_empty}

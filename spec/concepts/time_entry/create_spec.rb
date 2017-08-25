@@ -6,14 +6,11 @@ RSpec.describe TimeEntry::Create do
       @user = EndUser.new({
         email: 'asdf@asdf.asdf',
         name: 'asdf',
-        role: 'EndUser',
-        password: '12345678',
+        password: '12345678'
       })
 
       @user.skip_confirmation!
       @user.save
-
-      puts @user.errors.messages
     end
 
     context 'valid params' do

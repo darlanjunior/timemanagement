@@ -1,4 +1,5 @@
 class NotesController < ApplicationController
+  before_action :authenticate_user!
   def create
     result = Note::Create.(params, 'current_user' => current_user)
 

@@ -19,7 +19,6 @@ class User::Create < Trailblazer::Operation
   end
 
   def generate_password!(options, params:, **)
-    puts 'generating_pass'
     params[:password] = Devise.friendly_token.first(8)
   end
 

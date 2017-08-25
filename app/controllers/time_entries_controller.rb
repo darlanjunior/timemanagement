@@ -2,6 +2,7 @@ class TimeEntriesController < ActionController::Base
   include DeviseTokenAuth::Concerns::SetUserByToken
   include ActionController::MimeResponds
 
+  before_action :authenticate_user!
   before_action :set_user
   def index
     result = TimeEntry::List.(params, user: @user, 'current_user' => current_user)
