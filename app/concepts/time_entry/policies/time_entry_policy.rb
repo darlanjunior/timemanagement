@@ -17,8 +17,7 @@ class TimeEntryPolicy
 
   def create?
     if !@user ||
-        @user.role == 'Manager' ||
-        @user.role == 'Admin'
+        @user.role == 'Manager'
       return false
     end
 
