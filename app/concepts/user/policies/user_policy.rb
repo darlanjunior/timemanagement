@@ -4,29 +4,25 @@ class UserPolicy
   end
 
   def list?
-    return false if !@user
-    ['Admin', 'Manager'].include? @user.role
+    @user && @user.role != 'EndUser'
   end
 
   def create?
-    return false if !@user
-    ['Admin', 'Manager'].include? @user.role
+    @user && @user.role != 'EndUser'
   end
 
   def update?
-    return false if !@user
-    is_hierarchically_superior @user, @model
+    @user && is_hierarchically_superior(@user, @model)
   end
 
   def destroy?
-    return false if !@user
-    is_hierarchically_superior @user, @model
+    @user && is_hierarchically_superior(@user, @model)
   end
 
   private
   def is_hierarchically_superior user, target
-    return true if user.role == 'Admin'
-    return true if user.role == 'Manager' && target.role != 'Admin'
-    return false
+    @hierarchy ||= ['Admin','Manager','EndUser']
+
+    @hierarchy.index(user.role) < @hierarchy.index(target.role)
   end
 end
