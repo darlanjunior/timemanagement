@@ -10,6 +10,7 @@ class User::Create < Trailblazer::Operation
   step Policy::Pundit( UserPolicy, :create? )
   failure :rollback!
   failure :unauthorized_response!, fail_fast: true
+  step :skip_confirmation!
   step :send_mail!
   success :success!
   failure :internal_error!
@@ -20,6 +21,11 @@ class User::Create < Trailblazer::Operation
 
   def generate_password!(options, params:, **)
     params[:password] = Devise.friendly_token.first(8)
+  end
+
+  def skip_confirmation!(options, model:, **)
+    model.skip_confirmation!
+    model.save
   end
 
   def send_mail!(options, params:, **)
@@ -56,7 +62,7 @@ class User::Create < Trailblazer::Operation
     options[:'status'] = :internal_error
     options[:'result.json'] = {
       status: 'error',
-      message: 'An error occurred'
+      errors: ['An error occurred']
     }
   end
 end
