@@ -1,6 +1,8 @@
+import { Segment } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 
+import ResetPasswordButton from './ResetPasswordButton';
 import UserForm from '../UserForm';
 import ajax from '../../Shared/ajax';
 
@@ -15,6 +17,7 @@ class EditUserPage extends Component {
       reload,
       history,
       users,
+      refreshList,
       match: {
         params: {id}
       }
@@ -24,8 +27,9 @@ class EditUserPage extends Component {
 
     const {email, name, role} = users.find(u => u.id === id).attributes
 
-    return <div style={{marginBottom: '20px'}}>
-      <h3>Editing {email}</h3>
+    return <Segment>
+      <h2>Editing {email}</h2>
+
       <UserForm
         {...this.state}
         initialValues={() => { return {
@@ -36,6 +40,7 @@ class EditUserPage extends Component {
           reload(form, 'put', `/${id}`)
             .then(response => {
               if(response.status === 'success') {
+                refreshList()
                 history.goBack()
               } else {
                 this.setState({
@@ -49,7 +54,8 @@ class EditUserPage extends Component {
           name: 'text',
           role: 'text'
         }} />
-    </div>
+        <ResetPasswordButton id={id}/>
+    </Segment>
   }
 }
 
