@@ -40,8 +40,8 @@ class CreateTimeEntryListPage extends Component {
 
           <Input label="Name" field="name" />
           <Input label="Description" field="description" type="textarea" />
-          <Input label="Date" field="date" />
-          <Input label="Duration" field="duration" />
+          <Input label="Date" field="date" mask="9999-99-99" placeholder="YYYY-MM-DD"/>
+          <Input label="Duration" field="duration" mask="99:99" placeholder="HH:MM"/>
 
           <Message success content={!!success && success} />
           <Message error content={!!error && error.map(e => <li>{e}</li>)}/>
