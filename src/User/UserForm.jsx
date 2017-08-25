@@ -21,7 +21,7 @@ const allowedRoles = role => {
   const roles = ['Admin', 'Manager', 'EndUser']
   const mine = roles.indexOf(role)
 
-  return roles.slice(mine)
+  return roles.slice(mine+1)
 }
 
 const inputFor = (field, errors, fieldType='text', role='') => {

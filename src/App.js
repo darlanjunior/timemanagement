@@ -1,7 +1,9 @@
-import './App.css';
 import 'react-dates/lib/css/_datepicker.css';
 
+import './App.css';
+
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Loader } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import _ from 'lodash'
 import cookie from 'react-cookies';
@@ -80,11 +82,12 @@ class App extends Component {
         name,
         picture,
         role,
-        preferred_working_hours: (role === 'EndUser' ? preferred_working_hours : null)
+        preferred_working_hours
       }
     })
 
   render() {
+    if(this.props.loading) return <Loader active />
     return (
       <BrowserRouter>
         <div>

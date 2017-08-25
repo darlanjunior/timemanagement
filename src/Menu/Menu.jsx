@@ -21,21 +21,23 @@ import UserListPage from '../User/Manage/UserListPage';
 import UserRouter from '../User/UserRouter';
 
 const UnsignedMenu = () => (
-  <SemanticMenu.Menu position='right'>
-    <Item>
-      <Link to="/sign_in">
-        <Icon name='sign in' />
-        Sign In
-      </Link>
-    </Item>
+  <SemanticMenu>
+    <SemanticMenu.Menu position='right'>
+      <Item>
+        <Link to="/sign_in">
+          <Icon name='sign in' />
+          Sign In
+        </Link>
+      </Item>
 
-    <Item>
-      <Link to="/register">
-        <Icon name='add user' />
-        Register
-      </Link>
-    </Item>
-  </SemanticMenu.Menu>
+      <Item>
+        <Link to="/register">
+          <Icon name='add user' />
+          Register
+        </Link>
+      </Item>
+    </SemanticMenu.Menu>
+  </SemanticMenu>
 )
 
 const logout = () => {
@@ -44,27 +46,34 @@ const logout = () => {
 }
 
 const SignedMenu = ({name, role}) => (
-  <SemanticMenu.Menu position='right'>
-    <Dropdown item text={`Welcome, ${name} - ${role}`}>
-      <Dropdown.Menu>
-        <Link to='/profile'><Dropdown.Item>Edit profile</Dropdown.Item></Link>
-        <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  </SemanticMenu.Menu>
+  <SemanticMenu>
+    <Item>
+      <Link to="/time_entries">
+        <Icon name='clock' />
+        Time Entries
+      </Link>
+    </Item>
+    {role !== 'EndUser' ? <Item>
+      <Link to="/users">
+        <Icon name='user' />
+        Users
+      </Link>
+    </Item> : null }
+
+    <SemanticMenu.Menu position='right'>
+      <Dropdown item text={`Welcome, ${name} - ${role}`}>
+        <Dropdown.Menu>
+          <Link to='/profile'><Dropdown.Item>Edit profile</Dropdown.Item></Link>
+          <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </SemanticMenu.Menu>
+  </SemanticMenu>
 )
 
 const Menu = (_, {currentUser: {name, role}}) => (
   <div>
-    <SemanticMenu>
-      <Item>
-        <Link to="/">
-          <Icon name='home' />
-          Home
-        </Link>
-      </Item>
-      {!!name? <SignedMenu name={name} role={role} /> : <UnsignedMenu /> }
-    </SemanticMenu>
+    {!!name? <SignedMenu name={name} role={role} /> : <UnsignedMenu /> }
     <Container>
       <Switch>
         <Route path="/users/:userId/time_entries" component={UserRouter} />

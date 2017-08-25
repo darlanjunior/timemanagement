@@ -1,20 +1,23 @@
 import { Button, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import RemoveUserButton from './RemoveUserButton';
 
-export default ({id, attributes: {
+const User = ({id, attributes: {
   name,
   email,
   role
 }, remove
-}) => (
+}, {currentUser}) => (
   <Table.Row>
     <Table.Cell>
-      <Link to={`/users/${id}/time_entries`}>
-        {name}
-      </Link>
+      { currentUser.role === 'Manager' ? name : (
+        <Link to={`/users/${id}/time_entries`}>
+          {name}
+        </Link>
+      )}
     </Table.Cell>
     <Table.Cell>{email}</Table.Cell>
     <Table.Cell>{role}</Table.Cell>
@@ -28,3 +31,9 @@ export default ({id, attributes: {
     </Table.Cell>
   </Table.Row>
 )
+
+User.contextTypes = {
+  currentUser: PropTypes.object
+}
+
+export default User;

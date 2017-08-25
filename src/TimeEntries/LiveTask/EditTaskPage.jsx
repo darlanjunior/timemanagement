@@ -10,7 +10,7 @@ class EditTaskPage extends Component {
   }
 
   submit = form => {
-    const {reload, history, match, task: {id}} = this.props
+    const {reload, history, task: {id}} = this.props
 
     reload(form, 'put', `/${id}`)
       .then(response => {

@@ -19,7 +19,7 @@ class CreateUserPage extends Component {
         reload(user, 'post')
           .then(response => {
             if(response.status === 'success') {
-              history.push('/')
+              history.goBack()
             } else {
               this.setState({
                 error: response.errors.full_messages || response.errors,

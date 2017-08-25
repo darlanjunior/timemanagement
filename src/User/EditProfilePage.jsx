@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 
 import UserForm from './UserForm';
 import ajax from '../Shared/ajax';
@@ -31,19 +30,19 @@ class EditProfilePage extends Component {
       })
 
   render = () => {
-    const {name, preferred_working_hours, role} = this.context.currentUser
+    const {name, preferred_working_hours} = this.context.currentUser
     return <div>
       <h2>Edit profile</h2>
       <UserForm
-        fields={_.merge({
+        fields={{
           name: 'text',
           password: 'password',
-          password_confirmation: 'password'
-        }, role === 'EndUser' ? {preferred_working_hours} : {}
-        )}
+          password_confirmation: 'password',
+          preferred_working_hours: 'text'
+        }}
         initialValues={() => { return {
           name,
-          preferred_working_hours: (role === 'EndUser' ? preferred_working_hours : undefined)
+          preferred_working_hours
         }}}
         {...this.state}
         submit={this.submitForm} />
@@ -53,7 +52,7 @@ class EditProfilePage extends Component {
 
 EditProfilePage.contextTypes = {
   currentUser: PropTypes.object,
-  setCurrentUser: PropTypes.function
+  setCurrentUser: PropTypes.func
 }
 
 export default ajax({

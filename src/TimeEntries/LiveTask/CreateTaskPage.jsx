@@ -10,7 +10,7 @@ class CreateTaskPage extends Component {
   }
 
   submit = form => {
-    const {reload, refreshLiveTask, history, match} = this.props
+    const {reload, refreshLiveTask, history} = this.props
 
     reload(form, 'post')
       .then(response => {

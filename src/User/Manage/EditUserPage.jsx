@@ -36,7 +36,7 @@ class EditUserPage extends Component {
           reload(form, 'put', `/${id}`)
             .then(response => {
               if(response.status === 'success') {
-                history.push('/')
+                history.goBack()
               } else {
                 this.setState({
                   error: response.errors.full_messages || response.errors,
