@@ -22,6 +22,7 @@ class User::List < Trailblazer::Operation
   end
 
   def filter_admins!(options, current_user:, **)
+    options[:count] = options[:count].where(role: hierarchy(current_user.role))
     options[:result] = options[:result].where(role: hierarchy(current_user.role))
   end
 
@@ -30,7 +31,7 @@ class User::List < Trailblazer::Operation
       UserRepresenter
         .for_collection
         .new(result)
-        .to_json(meta: {count: count})
+        .to_json(meta: {count: count.count})
   end
 
   def hierarchy role

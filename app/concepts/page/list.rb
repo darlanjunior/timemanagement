@@ -42,7 +42,7 @@ class Page::List < Trailblazer::Operation
     model = model.where(query, *search) if !search.blank?
     model = model.order(order_by) if order_by
 
-    options[:count] = model.count
+    options[:count] = model
     offset = (page-1)*items_per_page
     options[:result] = model.limit(items_per_page).offset(offset)
   end

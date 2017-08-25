@@ -24,6 +24,7 @@ class TimeEntry::List < Trailblazer::Operation
   end
 
   def filter_user!(options, user:, **)
+    options[:count] = options[:count].where(user: user)
     options[:'result'] = options[:'result'].where(user: user)
   end
 
@@ -32,9 +33,11 @@ class TimeEntry::List < Trailblazer::Operation
     endDate = params[:endDate]
 
     if(startDate)
+      options[:count] = options[:count].where('date > ?', DateTime.parse(startDate))
       options[:'result'] = options[:'result'].where('date > ?', DateTime.parse(startDate))
     end
     if(endDate)
+      options[:count] = options[:count].where('date < ?', DateTime.parse(endDate))
       options[:'result'] = options[:'result'].where('date < ?', DateTime.parse(endDate))
     end
 
@@ -61,7 +64,6 @@ class TimeEntry::List < Trailblazer::Operation
     }
 
     meta = {
-      count: count,
       preferred_working_hours: user_hours
     }
 
@@ -69,6 +71,6 @@ class TimeEntry::List < Trailblazer::Operation
       TimeEntryRepresenter
         .for_collection
         .new(result)
-        .to_json(user_options: user_options, meta: {count: count})
+        .to_json(user_options: user_options, meta: {count: count.count})
   end
 end
