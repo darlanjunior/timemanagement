@@ -34,17 +34,5 @@ RSpec.describe DeviseTokenAuth::RegistrationsController, type: :controller do
 
       it { is_expected.to match(expected_response) }
     end
-
-    context 'Manager' do
-      let(:model_class) { Manager }
-      let(:expected_response) {{
-        'status' => 'error',
-        'errors' => a_hash_including({
-          'preferred_working_hours' => ['must be blank']
-        })
-      }}
-
-      it { is_expected.to match(expected_response) }
-    end
   end
 end

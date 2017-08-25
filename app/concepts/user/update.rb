@@ -5,11 +5,16 @@ class User::Update < Trailblazer::Operation
   step Contract::Build( constant: User::Contract::Update )
   step Contract::Validate()
   failure :invalid_model!, fail_fast: true
-  step Policy::Pundit( UserPolicy, :update? )
-  failure :unauthorized_response!, fail_fast: true
   step Contract::Persist()
+  step Policy::Pundit( UserPolicy, :update? )
+  failure :rollback!
+  failure :unauthorized_response!, fail_fast: true
   success :success!
   failure :internal_error!
+
+  def rollback!(options, model:, **)
+    model.destroy
+  end
 
   def invalid_model!(options, **)
     options[:'status'] = :unprocessable_entity

@@ -1,3 +1,3 @@
 class LiveTask < ApplicationRecord
-  belongs_to :end_user, foreign_key: 'user_id'
+  belongs_to :user
 end

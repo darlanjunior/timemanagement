@@ -4,45 +4,34 @@ class TimeEntryPolicy
   end
 
   def list?
-    !(!@user || @user.role == 'Manager')
+    @user && ['Admin', 'EndUser'].include?(@user.role)
   end
 
   def show?
-    !(
-      !@user ||
-      @user.role == 'Manager' ||
-      (@model.end_user != @user && @user.role == 'EndUser')
-      )
+    exists_and_owns_or_admin
   end
 
   def create?
-    if !@user ||
-        @user.role == 'Manager'
-      return false
-    end
-
-    true
+    exists_and_owns_or_admin
   end
 
   def update?
-    if !@user ||
-        @user.role == 'Manager' ||
-        (@user.role == 'Admin' && @model.end_user == @user) ||
-        (@user.role == 'EndUser' && @model.end_user != @user)
-      return false
-    end
-
-    true
+    exists_and_owns_or_admin
   end
 
   def destroy?
-    if !@user ||
-        @user.role == 'Manager' ||
-        (@user.role == 'Admin' && @model.end_user == @user) ||
-        (@user.role == 'EndUser' && @model.end_user != @user)
-      return false
-    end
+    exists_and_owns_or_admin
+  end
 
-    true
+  def exists_and_owns_or_admin
+    @user && (is_owner || is_admin)
+  end
+
+  def is_owner
+    @model.user == @user
+  end
+
+  def is_admin
+    @user.role == 'Admin'
   end
 end

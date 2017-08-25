@@ -32,7 +32,7 @@ class TimeEntriesController < ActionController::Base
 
   def create
     result = TimeEntry::Create.(
-      params.merge({end_user: @user}),
+      params.merge({user: @user}),
       'current_user' => current_user
     )
 
@@ -44,7 +44,7 @@ class TimeEntriesController < ActionController::Base
 
   def update
     result = TimeEntry::Update.(
-      params.merge({end_user: @user}),
+      params.merge({user: @user}),
       'current_user' => current_user
     )
 
@@ -56,7 +56,7 @@ class TimeEntriesController < ActionController::Base
 
   def destroy
     result = TimeEntry::Destroy.(
-      params.merge({end_user: @user}),
+      params.merge({user: @user}),
       'current_user' => current_user
     )
 
@@ -68,7 +68,7 @@ class TimeEntriesController < ActionController::Base
 
   private
   def set_user
-    @user = current_user.role == 'Admin' ?
+    @user = params[:user_id] ?
       User.find(params[:user_id]) :
       current_user
   end

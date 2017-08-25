@@ -21,12 +21,8 @@ class User::List < Trailblazer::Operation
     params[:items_per_page] = params[:items_per_page] || 5
   end
 
-  def filter_admins!(options, result:, current_user:, **)
-    if current_user.role == 'Manager'
-      result = result.where.not(role: 'Admin')
-    else
-      true
-    end
+  def filter_admins!(options, current_user:, **)
+    options[:result] = options[:result].where(role: hierarchy(current_user.role))
   end
 
   def represent!(options, result:, count:, **)
@@ -35,5 +31,11 @@ class User::List < Trailblazer::Operation
         .for_collection
         .new(result)
         .to_json(meta: {count: count})
+  end
+
+  def hierarchy role
+    roles = ['Admin', 'Manager', 'EndUser']
+
+    roles.slice((roles.index(role)+1)..-1)
   end
 end

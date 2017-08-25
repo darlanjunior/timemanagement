@@ -8,7 +8,7 @@ class UserPolicy
   end
 
   def create?
-    @user && @user.role != 'EndUser'
+    @user && @user.role != 'EndUser' && is_hierarchically_superior(@user, @model)
   end
 
   def update?

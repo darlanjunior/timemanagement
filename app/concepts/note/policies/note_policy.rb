@@ -4,23 +4,10 @@ class NotePolicy
   end
 
   def create?
-    if !@user ||
-        @user.role == 'Manager' ||
-        (@model.time_entry.end_user != @user && @user.role == 'EndUser')
-      return false
-    end
-
-    true
+    @user && (@model.time_entry.user == @user || @user.role == 'Admin')
   end
 
   def destroy?
-    if !@user ||
-        @user.role == 'Manager' ||
-        (@user.role == 'Admin' && @model.time_entry.end_user == @user) ||
-        (@user.role == 'EndUser' && @model.time_entry.end_user != @user)
-      return false
-    end
-
-    true
+    @user && (@model.time_entry.user == @user || @user.role == 'Admin')
   end
 end

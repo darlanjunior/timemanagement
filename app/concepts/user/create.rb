@@ -6,14 +6,20 @@ class User::Create < Trailblazer::Operation
   step Contract::Build( constant: User::Contract::Create )
   step Contract::Validate()
   failure :invalid_model!, fail_fast: true
-  step Policy::Pundit( UserPolicy, :create? )
-  failure :unauthorized_response!, fail_fast: true
   step Contract::Persist()
+  step Policy::Pundit( UserPolicy, :create? )
+  failure :rollback!
+  failure :unauthorized_response!, fail_fast: true
   step :send_mail!
   success :success!
   failure :internal_error!
 
+  def rollback!(options, model:, **)
+    model.destroy
+  end
+
   def generate_password!(options, params:, **)
+    puts 'generating_pass'
     params[:password] = Devise.friendly_token.first(8)
   end
 

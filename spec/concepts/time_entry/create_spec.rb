@@ -12,6 +12,8 @@ RSpec.describe TimeEntry::Create do
 
       @user.skip_confirmation!
       @user.save
+
+      puts @user.errors.messages
     end
 
     context 'valid params' do

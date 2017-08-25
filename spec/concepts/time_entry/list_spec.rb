@@ -37,7 +37,7 @@ RSpec.describe TimeEntry::List do
       another_user.save
     end
 
-    subject { JSON.parse(described_class.call(params, 'current_user' => @user)[:'result.json']) }
+    subject { JSON.parse(described_class.call(params, user: @user, 'current_user' => @user)[:'result.json']) }
 
     context 'no params' do
       let(:params) {{
@@ -48,7 +48,7 @@ RSpec.describe TimeEntry::List do
           'id' => a_kind_of(String),
           'attributes' => a_hash_including({
             'name' => 'my task',
-            'fills-workday' => false
+            'green' => false
           })
         })
       ]}

@@ -5,11 +5,16 @@ class TimeEntry::Create < Trailblazer::Operation
   step Contract::Build( constant: TimeEntry::Contract::Create )
   step Contract::Validate()
   failure :invalid_model!, fail_fast: true
-  step Policy::Pundit( TimeEntryPolicy, :create? )
-  failure :unauthorized_response!, fail_fast: true
   step Contract::Persist()
+  step Policy::Pundit( TimeEntryPolicy, :create? )
+  failure :rollback!
+  failure :unauthorized_response!, fail_fast: true
   success :success!
   failure :internal_error!
+
+  def rollback!(options, model:, **)
+    model.destroy
+  end
 
   def full_messages(errors)
     to_message = lambda do |field|

@@ -2,7 +2,7 @@ class LiveTasksController < ApplicationController
   before_action :set_user
 
   def index
-    task = LiveTask.find_by(end_user: @user)
+    task = LiveTask.find_by(user: @user)
     if !task
       render json: {
         error: 'No live tasks currently active'
@@ -16,7 +16,7 @@ class LiveTasksController < ApplicationController
   end
 
   def create
-    if LiveTask.where(end_user: @user).count > 0
+    if LiveTask.where(user: @user).count > 0
       render json: {
         errors: ['There can only be one live task at a time']
       }, status: :conflict
@@ -25,7 +25,7 @@ class LiveTasksController < ApplicationController
 
     live_task = LiveTask.new(permitted_params.merge({
       start: Time.now,
-      end_user: @user
+      user: @user
     }))
 
     live_task.save!
@@ -72,7 +72,7 @@ class LiveTasksController < ApplicationController
   def destroy
     live_task = LiveTask.find(params[:id])
 
-    if live_task.end_user != @user
+    if live_task.user != @user
       render json: {
         error: 'Not allowed to end task'
       }, status: :unauthorized
@@ -85,7 +85,7 @@ class LiveTasksController < ApplicationController
         description: live_task.description,
         date: live_task.start,
         duration: Time.at((Time.zone.now - live_task.start).to_i.abs).utc,
-        end_user: @user
+        user: @user
       })
       render json: live_task.destroy && time_entry.save
     else
@@ -95,7 +95,7 @@ class LiveTasksController < ApplicationController
 
   private
   def set_user
-    @user = current_user.role == 'Admin' ?
+    @user = params[:user_id] ?
       User.find(params[:user_id]) :
       current_user
   end
@@ -103,7 +103,8 @@ class LiveTasksController < ApplicationController
   def permitted_params
     params.permit(
       :name,
-      :description
+      :description,
+      :user_id
     )
   end
 end
