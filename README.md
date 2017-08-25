@@ -1,24 +1,11 @@
-# README
+Time Management Application Backend
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Allows users to register a task on which they worked, and for how long.
 
-Things you may want to cover:
+Usage:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Install and configure postgresql, ruby 2.3 and bundler
+Run:
+  bundle Install
+  rake db:create db:migrate
+  rails s -p 3001
