@@ -1,6 +1,6 @@
 class EndUser < User
-  has_many :time_entries, foreign_key: 'user_id'
-  has_one :live_task, foreign_key: 'user_id'
+  has_many :time_entries, foreign_key: 'user_id', :dependent => :delete_all
+  has_one :live_task, foreign_key: 'user_id', :dependent => :delete
   validate :preferred_working_hours, :cannot_be_zero
 
   def cannot_be_zero
