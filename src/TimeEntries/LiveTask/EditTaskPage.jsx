@@ -10,10 +10,12 @@ class EditTaskPage extends Component {
   }
 
   submit = form => {
-    this.props.reload(form, 'put', `/${this.props.task.id}`)
+    const {reload, history, match, task: {id}} = this.props
+
+    reload(form, 'put', `/${id}`)
       .then(response => {
         if(response.status === 'success') {
-          this.props.history.push('/time_entries')
+          history.goBack()
         } else {
           const error = response.errors.full_messages || response.errors
           this.setState({error})
@@ -33,9 +35,8 @@ class EditTaskPage extends Component {
   }
 }
 
-
-
 export default withRouter(ajax({
   url: '/live_tasks',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadOnMount: false
 })(EditTaskPage))

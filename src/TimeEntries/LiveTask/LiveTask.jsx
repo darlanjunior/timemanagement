@@ -19,7 +19,7 @@ const LiveTaskView = ({task: {
   name,
   description,
   start
-}}) => <Segment>
+}, refreshList, url}) => <Segment>
     <h2>Task in progress</h2>
     <h3>{name}</h3>
     <p>{description}</p>
@@ -31,7 +31,8 @@ const LiveTaskView = ({task: {
         positive: true
       }}
       completeTask
-      id={id} />
+      id={id}
+      refreshList={refreshList}/>
     <EndLiveTaskButton
       buttonProps={{
         icon: 'cancel',
@@ -39,7 +40,7 @@ const LiveTaskView = ({task: {
         negative: true
       }}
       id={id} />
-    <Link to='/time_entries/live_tasks/edit'>
+    <Link to={`${url}/live_tasks/edit`.replace(/\/\//g, '/')}>
       <Button
         icon="edit"
         content="Edit" />
@@ -47,16 +48,20 @@ const LiveTaskView = ({task: {
   </Segment>
 
 
-const LiveTask = ({ match, response: { task } }) => {
+const LiveTask = ({ match, response: { task }, refreshList, reload }) => {
+  const createTaskPage = () => <CreateTaskPage refreshLiveTask={reload} />
   const editTaskPage = () => <EditTaskPage task={task} />
-  const defaultPage = () => !!task ? <LiveTaskView task={task} /> : null
+  const defaultPage = () => !!task ? <LiveTaskView refreshList={() => {
+    reload();
+    refreshList();
+  }} task={task} url={match.url}/> : null
 
   return <Switch>
     <Route
-      path={`${match.url}/live_tasks/new`}
-      component={CreateTaskPage} />
+      path={`${match.path}/live_tasks/new`.replace(/\/\//g, '/')}
+      render={createTaskPage} />
     <Route
-      path={`${match.url}/live_tasks/edit`}
+      path={`${match.path}/live_tasks/edit`.replace(/\/\//g, '/')}
       render={editTaskPage} />
     <Route
       render={defaultPage} />
@@ -65,5 +70,6 @@ const LiveTask = ({ match, response: { task } }) => {
 
 export default withRouter(ajax({
   url: '/live_tasks',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadingComponent: <Loader active/>
 })(LiveTask))

@@ -10,10 +10,13 @@ class CreateTaskPage extends Component {
   }
 
   submit = form => {
-    this.props.reload(form, 'post')
+    const {reload, refreshLiveTask, history, match} = this.props
+
+    reload(form, 'post')
       .then(response => {
         if(response.status === 'success') {
-          this.props.history.push('/time_entries')
+          refreshLiveTask()
+          history.goBack()
         } else {
           const error = response.errors.full_messages || response.errors
           this.setState({error})
@@ -33,5 +36,6 @@ class CreateTaskPage extends Component {
 
 export default withRouter(ajax({
   url: '/live_tasks',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadOnMount: false
 })(CreateTaskPage))

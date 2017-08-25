@@ -76,7 +76,7 @@ class TimeEntryListPage extends Component {
           render={editingPage}/>
       </Switch>
 
-      <LiveTask />
+      <LiveTask refreshList={() => reload(mergeStateWith(this.state))} />
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
       <div>
