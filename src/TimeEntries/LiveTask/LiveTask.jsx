@@ -39,7 +39,8 @@ const LiveTaskView = ({task: {
         content: 'Cancel',
         negative: true
       }}
-      id={id} />
+      id={id}
+      refreshList={refreshList} />
     <Link to={`${url}/live_tasks/edit`.replace(/\/\//g, '/')}>
       <Button
         icon="edit"

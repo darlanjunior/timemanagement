@@ -13,9 +13,7 @@ const EndLiveTaskButton = ({
 }) => (
   <Button
     {...buttonProps}
-    onClick={() => reload({completeTask}, 'delete', `/${id}`).then(() => {
-      return completeTask? refreshList() : null
-    })}/>
+    onClick={() => reload({completeTask}, 'delete', `/${id}`).then(() => refreshList())}/>
 )
 
 export default withRouter(ajax({
