@@ -1,5 +1,6 @@
 import { Button, Form, Message, Segment } from 'semantic-ui-react';
 import { Form as ReactForm } from 'react-form';
+import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 
 import Input from '../Shared/Input';
@@ -52,7 +53,8 @@ class CreateTimeEntryListPage extends Component {
   }
 }
 
-export default ajax({
+export default withRouter(ajax({
   url: '/time_entries',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadOnMount: false
-})(CreateTimeEntryListPage)
+})(CreateTimeEntryListPage))

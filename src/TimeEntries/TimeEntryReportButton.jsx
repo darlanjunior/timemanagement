@@ -1,4 +1,5 @@
 import { Button } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import React from 'react';
 
 import ajax from '../Shared/ajax';
@@ -10,7 +11,8 @@ const TimeEntryReportButton = ({reload, params}) => <Button
   icon="external"
   content="Export"/>
 
-export default ajax({
+export default withRouter(ajax({
   url: '/time_entries.html',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadOnMount: false
-})(TimeEntryReportButton)
+})(TimeEntryReportButton))

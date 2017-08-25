@@ -33,21 +33,6 @@ class NoteForm extends Component {
 
 export default ajax({
   url: ({timeEntryId}) => `/time_entries/${timeEntryId}/notes`,
+  params: ({userId}) => !!userId? {user_id: userId} : {},
   loadOnMount: false
 })(NoteForm)
-
-/*.then(response => {
-  if(response.status === 'success') {
-    this.setState({success: true, error: undefined})
-  } else {
-    this.setState({
-      error: response.errors.full_messages || response.errors,
-      success: undefined
-    })
-  }
-})
-}*/
-
-/*
-
-*/

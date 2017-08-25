@@ -67,5 +67,6 @@ class EditTimeEntryPage extends Component {
 
 export default withRouter(ajax({
   url: '/time_entries',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadOnMount: false
 })(EditTimeEntryPage));

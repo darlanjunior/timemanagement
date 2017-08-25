@@ -18,6 +18,7 @@ import ShowTimeEntryPage from '../TimeEntries/ShowTimeEntryPage';
 import SignInPage from '../User/SignInPage';
 import TimeEntryListPage from '../TimeEntries/TimeEntryListPage';
 import UserListPage from '../User/Manage/UserListPage';
+import UserRouter from '../User/UserRouter';
 
 const UnsignedMenu = () => (
   <SemanticMenu.Menu position='right'>
@@ -66,7 +67,7 @@ const Menu = (_, {currentUser: {name, role}}) => (
     </SemanticMenu>
     <Container>
       <Switch>
-        <Route exact path="/" component={!!role? (role === 'EndUser'? TimeEntryListPage : UserListPage) : SignInPage} />
+        <Route path="/users/:userId/time_entries" component={UserRouter} />
         <Route path="/users" component={UserListPage} />
         <Route exact path="/time_entries/:id/show" component={ShowTimeEntryPage} />
         <Route path="/time_entries" component={TimeEntryListPage} />
@@ -74,6 +75,7 @@ const Menu = (_, {currentUser: {name, role}}) => (
         <Route path="/register" component={RegisterPage} />
         <Route path="/profile" component={EditProfilePage} />
         <Route path="/password" component={ForgotPasswordPage} />
+        <Route component={!!role? (role === 'EndUser'? TimeEntryListPage : UserListPage) : SignInPage} />
       </Switch>
     </Container>
   </div>

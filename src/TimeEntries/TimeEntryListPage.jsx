@@ -1,6 +1,6 @@
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { DateRangePicker } from 'react-dates';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import _ from 'lodash'
 
@@ -41,6 +41,7 @@ class TimeEntryListPage extends Component {
 
   render () {
     const {
+      match,
       loading,
       reload,
       response: {
@@ -49,6 +50,7 @@ class TimeEntryListPage extends Component {
       }
     } = this.props
 
+    const userId = match.params && match.params.userId
     const {
       page,
       items_per_page
@@ -56,23 +58,25 @@ class TimeEntryListPage extends Component {
 
     const {updateSearchTerm, changeResults, mergeStateWith} = this
 
-    const creationPage = () => <CreateTimeEntryPage refreshList={() => reload(mergeStateWith(this.state))}/>
-    const editingPage = () => <EditTimeEntryPage refreshList={() => reload(mergeStateWith(this.state))} timeEntries={data}/>
-
+    const creationPage = () => <CreateTimeEntryPage
+      userId={userId}
+      refreshList={() => reload(mergeStateWith(this.state))}/>
+    const editingPage = () => <EditTimeEntryPage
+      userId={userId}
+      refreshList={() => reload(mergeStateWith(this.state))}
+      timeEntries={data}/>
     return <div>
       <Switch>
         <Route
-          exact
-          path={`/time_entries/new`}
+          path={`${match.path}/new`.replace(/\/\//g, '/')}
           render={creationPage} />
         <Route
           exact
-          path={`/time_entries/:id`}
+          path={`${match.path}/:id`.replace(/\/\//g, '/')}
           render={editingPage}/>
       </Switch>
 
       <LiveTask />
-
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
       <div>
@@ -91,7 +95,7 @@ class TimeEntryListPage extends Component {
       </div>
 
       <div>
-        <TimeEntryReportButton params={this.state} />
+        <TimeEntryReportButton params={this.state} userId={userId} />
         <Form.Input
           style={{marginTop: '19px'}}
           placeholder="Search"
@@ -112,13 +116,13 @@ class TimeEntryListPage extends Component {
         items_per_page={items_per_page}
         changePage={changeResults.bind(this)} />
 
-      <Link to={`/time_entries/new`}>
+      <Link to={`${match.url}/new`.replace(/\/\//g, '/')}>
         <Button
           icon="add"
           content="Create Time Entry"
           floated="right"/>
       </Link>
-      <Link to={`/time_entries/live_tasks/new`}>
+      <Link to={`${match.url}/live_tasks/new`.replace(/\/\//g, '/')}>
         <Button
           icon="clock"
           content="Start Ongoing Task"
@@ -126,10 +130,9 @@ class TimeEntryListPage extends Component {
       </Link>
     </div>
   }
-
 }
 
-
-export default ajax({
-  url: '/time_entries'
-})(TimeEntryListPage)
+export default withRouter(ajax({
+  url: '/time_entries',
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
+})(TimeEntryListPage))

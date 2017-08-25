@@ -1,26 +1,30 @@
 import { Button, Table } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import React from 'react';
 
 import RemoveTimeEntryButton from './RemoveTimeEntryButton';
 
-export default ({id, attributes: {
-  name,
-  date,
-  duration,
-  green
-}, remove
+const TimeEntry = ({
+  id,
+  remove,
+  match,
+  attributes: {
+    name,
+    date,
+    duration,
+    green
+  }
 }) => (
   <Table.Row positive={green} negative={!green}>
     <Table.Cell>
-      <Link to={`/time_entries/${id}/show`}>
+      <Link to={`${match.url.replace('/time_entries', '')}/time_entries/${id}/show`.replace(/\/\//g, '/')}>
         {name}
       </Link>
     </Table.Cell>
     <Table.Cell>{date}</Table.Cell>
     <Table.Cell>{duration}</Table.Cell>
     <Table.Cell>
-      <Link to={`/time_entries/${id}`}>
+      <Link to={`${match.url}/${id}`.replace(/\/\//g, '/')}>
         <Button icon='edit' fluid/>
       </Link>
     </Table.Cell>
@@ -29,3 +33,5 @@ export default ({id, attributes: {
     </Table.Cell>
   </Table.Row>
 )
+
+export default withRouter(TimeEntry)

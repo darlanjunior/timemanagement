@@ -51,14 +51,14 @@ export default ({
 
       urlEndpoint = () => this.context.urlEndpoint
 
-      getUrl = p => typeof url === 'function' ? url(p) : url
+      unthunk = (obj, props) => typeof obj === 'function' ? obj(props) : obj
 
       fetchData(aditionalParams={}, method='get', path='') {
         this.setState({loading: true})
 
         return api(
-            `${this.urlEndpoint()||''}${this.getUrl(this.props)}${path}`,
-            {...params, ...aditionalParams},
+            `${this.urlEndpoint()||''}${this.unthunk(url, this.props)}${path}`,
+            {...this.unthunk(params, this.props), ...aditionalParams},
             method
           )
           .then(this.setLoadedState.bind(this))

@@ -51,9 +51,9 @@ class UserListPage extends Component {
 
     return <div>
       <Switch>
-        <Route exact path={`${match.url}/new`} component={CreateUserPage} />
+        <Route exact path={`${match.path}/new`.replace(/\/\//g, '/')} component={CreateUserPage} />
         <Route
-          path={`${match.url}/:id`}
+          path={`${match.path}/:id`.replace(/\/\//g, '/')}
           render={() => <EditUserPage users={data} />} />
       </Switch>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>

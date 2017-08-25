@@ -11,7 +11,11 @@ export default ({id, attributes: {
 }, remove
 }) => (
   <Table.Row>
-    <Table.Cell>{name}</Table.Cell>
+    <Table.Cell>
+      <Link to={`/users/${id}/time_entries`}>
+        {name}
+      </Link>
+    </Table.Cell>
     <Table.Cell>{email}</Table.Cell>
     <Table.Cell>{role}</Table.Cell>
     <Table.Cell>

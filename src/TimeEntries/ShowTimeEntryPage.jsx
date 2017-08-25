@@ -39,6 +39,7 @@ class ShowTimeEntryListPage extends Component {
           {
             notes.map(({id, text}) => <List.Item>
               <RemoveNoteButton
+                key={id}
                 id={id}
                 callback={() => this.props.reload()}
                 timeEntryId={timeEntryId} />
@@ -55,9 +56,6 @@ class ShowTimeEntryListPage extends Component {
 
 export default withRouter(ajax({
   url: ({match}) => `/time_entries/${match.params.id}`,
+  params: ({match}) => !!match.params.userId? {user_id: match.params.userId} : {},
   loadingComponent: <Loader active />
 })(ShowTimeEntryListPage))
-
-//this.setState({
-  // notes: [...addNotes, {id: null, text: note}]
-// }
