@@ -11,7 +11,7 @@ class TimeEntry::Show < Trailblazer::Operation
     options[:'status'] = :unauthorized
     options[:'result.json'] = {
       status: 'error',
-      error: 'Not allowed to show time entry'
+      errors: ['Not allowed to show time entry']
     }
   end
 
@@ -19,7 +19,7 @@ class TimeEntry::Show < Trailblazer::Operation
     options[:'status'] = :not_found
     options[:'result.json'] = {
       status: 'error',
-      error: 'Could not find time entry'
+      errors: ['Could not find time entry']
     }
   end
 

@@ -11,7 +11,7 @@ class User::Destroy < Trailblazer::Operation
     options[:'status'] = :invalid_request
     options[:'result.json'] = {
       status: 'error',
-      message: 'Not allowed to remove user'
+      errors: ['Not allowed to remove user']
     }
   end
 
@@ -19,7 +19,7 @@ class User::Destroy < Trailblazer::Operation
     options[:'status'] = :unauthorized
     options[:'result.json'] = {
       status: 'error',
-      message: 'Not allowed to remove user'
+      errors: ['Not allowed to remove user']
     }
   end
 
@@ -41,7 +41,7 @@ class User::Destroy < Trailblazer::Operation
     options[:'status'] = :internal_error
     options[:'result.json'] = {
       status: 'error',
-      message: 'An error occurred'
+      errors: ['An error occurred']
     }
   end
 end

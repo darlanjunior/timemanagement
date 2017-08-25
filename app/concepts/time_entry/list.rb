@@ -12,7 +12,7 @@ class TimeEntry::List < Trailblazer::Operation
 
   def unauthorized_response!(options)
     options[:'result.json'] = {
-      error: 'Not allowed to list time entries'
+      errors: ['Not allowed to list time entries']
     }
   end
 

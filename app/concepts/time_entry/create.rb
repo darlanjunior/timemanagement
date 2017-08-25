@@ -52,7 +52,7 @@ class TimeEntry::Create < Trailblazer::Operation
     options[:'status'] = :internal_error
     options[:'result.json'] = {
       status: 'error',
-      message: 'An error occurred'
+      errors: ['An error occurred']
     }
   end
 end

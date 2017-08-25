@@ -11,7 +11,7 @@ class TimeEntry::Destroy < Trailblazer::Operation
     options[:'status'] = :invalid_request
     options[:'result.json'] = {
       status: 'error',
-      message: 'Not allowed to remove user'
+      errors: ['Not allowed to remove time entry']
     }
   end
 
@@ -19,7 +19,7 @@ class TimeEntry::Destroy < Trailblazer::Operation
     options[:'status'] = :unauthorized
     options[:'result.json'] = {
       status: 'error',
-      message: 'Not allowed to remove user'
+      errors: ['Not allowed to remove time entry']
     }
   end
 
@@ -33,7 +33,7 @@ class TimeEntry::Destroy < Trailblazer::Operation
     options[:'status'] = :ok
     options[:'result.json'] = {
       status: 'success',
-      message: 'User removed'
+      message: 'Time entry removed'
     }
   end
 
@@ -41,7 +41,7 @@ class TimeEntry::Destroy < Trailblazer::Operation
     options[:'status'] = :internal_error
     options[:'result.json'] = {
       status: 'error',
-      message: 'An error occurred'
+      errors: ['An error occurred']
     }
   end
 end
