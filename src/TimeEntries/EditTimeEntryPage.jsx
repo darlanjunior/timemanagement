@@ -15,6 +15,7 @@ class EditTimeEntryPage extends Component {
   render() {
     const {
       refreshList,
+      history,
       reload,
       timeEntries,
       match: {
@@ -36,8 +37,9 @@ class EditTimeEntryPage extends Component {
           reload(form, 'put', '/'+id)
             .then(response => {
               if(response.status === 'success') {
-                this.setState({success: true, error: undefined})
+                this.setState({success: 'Entry updated successfully', error: undefined})
                 refreshList()
+                history.goBack()
               } else {
                 this.setState({
                   error: response.errors.full_messages || response.errors,

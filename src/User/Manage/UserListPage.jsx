@@ -20,6 +20,10 @@ class UserListPage extends Component {
     this.changeResults({search_term: target.value})
   }
 
+  mergeStateWith(params, state={}) {
+    return _.omitBy({...state, ...params}, val => !val)
+  }
+
   changeResults(params) {
     const newState = {...this.state, ...params}
 
@@ -31,6 +35,7 @@ class UserListPage extends Component {
 
   render() {
     const {
+      mergeStateWith,
       updateSearchTerm,
       changeResults,
       state: {
@@ -49,15 +54,21 @@ class UserListPage extends Component {
       }
     } = this;
 
+    const createUserPage = () => <CreateUserPage refreshList={() => reload(mergeStateWith(this.state))}/>
+    const editUserPage = () => <EditUserPage users={data} refreshList={() => reload(mergeStateWith(this.state))} />
+
     return <div>
       <Switch>
-        <Route exact path={`${match.path}/new`.replace(/\/\//g, '/')} component={CreateUserPage} />
+        <Route
+          exact
+          path={`${match.path}/new`.replace(/\/\//g, '/')}
+          render={createUserPage} />
         <Route
           path={`${match.path}/:id`.replace(/\/\//g, '/')}
-          render={() => <EditUserPage users={data} />} />
+          render={editUserPage} />
       </Switch>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        <h3>User list</h3>
+        <h2>User list</h2>
         <Form.Input
           placeholder="Search"
           type="text"

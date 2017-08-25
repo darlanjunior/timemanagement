@@ -1,3 +1,4 @@
+import { Segment } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 
@@ -11,14 +12,17 @@ class CreateUserPage extends Component {
   }
 
   render() {
-    const {reload, history} = this.props
+    const {reload, history, refreshList} = this.props
 
-    return <UserForm
+    return <Segment>
+      <h2>Create User</h2>
+      <UserForm
       {...this.state}
       submit={user =>
         reload(user, 'post')
           .then(response => {
             if(response.status === 'success') {
+              refreshList()
               history.goBack()
             } else {
               this.setState({
@@ -33,6 +37,7 @@ class CreateUserPage extends Component {
         email: 'text',
         role: 'text'
       }} />
+      </Segment>
   }
 }
 

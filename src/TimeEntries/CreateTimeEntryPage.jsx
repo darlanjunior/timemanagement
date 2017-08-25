@@ -13,7 +13,7 @@ class CreateTimeEntryListPage extends Component {
   }
 
   render = () => {
-    const {reload, refreshList} = this.props
+    const {reload, refreshList, history} = this.props
     const {success, error} = this.state
 
     return <Segment>
@@ -24,8 +24,9 @@ class CreateTimeEntryListPage extends Component {
           reload(form, 'post')
             .then(response => {
               if(response.status === 'success') {
-                this.setState({success: true, error: undefined})
+                this.setState({success: "Time entry created successfully", error: undefined})
                 refreshList()
+                history.goBack()
               } else {
                 this.setState({
                   error: response.errors.full_messages || response.errors,
