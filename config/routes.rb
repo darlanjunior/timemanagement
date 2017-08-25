@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   end
 
   resources :live_tasks
+  post '/users/:user_id/reset_password', to: 'users#reset_password'
 end

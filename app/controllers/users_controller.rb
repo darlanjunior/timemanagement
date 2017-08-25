@@ -35,4 +35,35 @@ class UsersController < ApplicationController
       status: result[:'status']
     )
   end
+
+  def reset_password
+    user = User.find_by(id: params[:user_id])
+    if !user
+      render(
+        json: {errors: ['Invalid user_id']},
+        status: 422
+      )
+      return
+    end
+
+    hierarchies = hierarchy(current_user.role)
+
+    if !hierarchies.include? user.role
+      render(
+        json: {errors: ['Not authorized to reset password']},
+        status: :unauthorized
+      )
+    end
+
+    if user.send_reset_password_instructions
+      render json: {status: 'success'}
+    end
+  end
+
+  private
+  def hierarchy role
+    roles = ['Admin', 'Manager', 'EndUser']
+
+    roles.slice((roles.index(role)+1)..-1)
+  end
 end
