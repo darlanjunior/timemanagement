@@ -5,7 +5,7 @@ import {
   Item,
   Menu as SemanticMenu,
 } from 'semantic-ui-react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import React from 'react';
 import cookie from 'react-cookies'
 
@@ -65,14 +65,16 @@ const Menu = (_, {currentUser: {name, role}}) => (
       {!!name? <SignedMenu name={name} role={role} /> : <UnsignedMenu /> }
     </SemanticMenu>
     <Container>
-      <Route exact path="/" component={!!role? (role === 'Admin'? UserListPage : TimeEntryListPage) : null} />
-      <Route path="/users" component={UserListPage} />
-      <Route exact path="/time_entries" component={TimeEntryListPage} />
-      <Route exact path="/time_entries/:id/show" component={ShowTimeEntryPage} />
-      <Route path="/sign_in" component={SignInPage} />
-      <Route path="/register" component={RegisterPage} />
-      <Route path="/profile" component={EditProfilePage} />
-      <Route path="/password" component={ForgotPasswordPage} />
+      <Switch>
+        <Route exact path="/" component={!!role? (role === 'EndUser'? TimeEntryListPage : UserListPage) : SignInPage} />
+        <Route path="/users" component={UserListPage} />
+        <Route exact path="/time_entries/:id/show" component={ShowTimeEntryPage} />
+        <Route path="/time_entries" component={TimeEntryListPage} />
+        <Route path="/sign_in" component={SignInPage} />
+        <Route path="/register" component={RegisterPage} />
+        <Route path="/profile" component={EditProfilePage} />
+        <Route path="/password" component={ForgotPasswordPage} />
+      </Switch>
     </Container>
   </div>
 )
